@@ -1,0 +1,405 @@
+[
+  {
+    "error_type": "ModuleNotFoundError",
+    "pattern": "No module named '(?P<name>[^']+)'",
+    "summary": "Python cannot find a module called '<name>'.",
+    "causes": [
+      "The package '<name>' is not installed in the environment running your script.",
+      "The module name is misspelled.",
+      "It is installed in a different environment (check the interpreter selected in VS Code and your venv).",
+      "It is your own file, but it is in another folder or named differently."
+    ],
+    "fix": "Install it in the same environment with pip, then run again. Some packages install under a different name (cv2 = opencv-python, PIL = pillow, sklearn = scikit-learn, yaml = pyyaml).",
+    "example": "pip install <name>"
+  },
+  {
+    "error_type": "ImportError",
+    "pattern": "cannot import name '(?P<name>[^']+)' from '(?P<module>[^']+)'",
+    "summary": "'<name>' does not exist inside '<module>'.",
+    "causes": [
+      "A typo in the name '<name>'.",
+      "Your installed version of '<module>' is older or newer and does not have it.",
+      "A circular import (two of your files import each other).",
+      "Your own file is named the same as a library (for example random.py), so it shadows the real one."
+    ],
+    "fix": "Check the spelling, upgrade the package, rename any file that shares a name with a library, and avoid circular imports.",
+    "example": "pip install --upgrade <module>"
+  },
+  {
+    "error_type": "NameError",
+    "pattern": "name '(?P<name>[^']+)' is not defined",
+    "summary": "The name '<name>' is used before it exists.",
+    "causes": [
+      "A typo in the variable or function name (Python is case sensitive).",
+      "The variable is used before it is assigned.",
+      "A missing import for '<name>'.",
+      "The variable was defined inside a function and is used outside it."
+    ],
+    "fix": "Check the spelling, define '<name>' before using it, or import it at the top of the file.",
+    "example": "import <name>   # if it is a module\n<name> = 0      # if it is a variable"
+  },
+  {
+    "error_type": "UnboundLocalError",
+    "pattern": "'(?P<name>[^']+)'",
+    "summary": "The local variable '<name>' is used before it gets a value.",
+    "causes": [
+      "You assign to '<name>' somewhere inside the function, which makes Python treat it as local everywhere in that function.",
+      "The assignment happens only inside an if/loop that did not run."
+    ],
+    "fix": "Give '<name>' a starting value at the top of the function, or declare it with 'global <name>' if you really mean the outer variable.",
+    "example": "def add():\n    global <name>\n    <name> += 1"
+  },
+  {
+    "error_type": "TypeError",
+    "pattern": "can only concatenate str",
+    "summary": "You tried to join text with a non-text value using +.",
+    "causes": [
+      "Adding a number (or other type) to a string, such as 'Age: ' + 25."
+    ],
+    "fix": "Convert the value to text with str(), or use an f-string.",
+    "example": "age = 25\nprint('Age: ' + str(age))\nprint(f'Age: {age}')"
+  },
+  {
+    "error_type": "TypeError",
+    "pattern": "unsupported operand type\\(s\\) for (?P<op>[^:]+): '(?P<a>[^']+)' and '(?P<b>[^']+)'",
+    "summary": "The operator '<op>' cannot be used between a '<a>' and a '<b>'.",
+    "causes": [
+      "Mixing incompatible types, for example a number and a string.",
+      "A variable is None because a function did not return a value.",
+      "Input from input() is text and needs converting to a number."
+    ],
+    "fix": "Convert both values to the same type (int(), float(), str()) and check that neither one is None.",
+    "example": "a = int(input('First: '))\nb = int(input('Second: '))\nprint(a + b)"
+  },
+  {
+    "error_type": "TypeError",
+    "pattern": "'(?P<t>[^']+)' object is not subscriptable",
+    "summary": "You used [ ] on a '<t>' value, which does not support it.",
+    "causes": [
+      "The value is None (a function returned nothing, or a method like list.sort() returns None).",
+      "The value is a number or another type that cannot be indexed.",
+      "A variable was overwritten with a different type."
+    ],
+    "fix": "Print the variable and its type() before the failing line to see what it really holds, and make sure the function returns the value you expect.",
+    "example": "print(type(my_var), my_var)"
+  },
+  {
+    "error_type": "TypeError",
+    "pattern": "'(?P<t>[^']+)' object is not callable",
+    "summary": "You used () on a '<t>' value, but it is not a function.",
+    "causes": [
+      "A variable has the same name as a function and replaced it (for example naming a variable 'list' or 'str').",
+      "A missing operator, such as writing 5(x) instead of 5 * x.",
+      "Calling an attribute that is a value, not a method."
+    ],
+    "fix": "Rename the variable that shadows the function, or add the missing operator.",
+    "example": "total = 5 * (x + 1)"
+  },
+  {
+    "error_type": "TypeError",
+    "pattern": "'(?P<t>[^']+)' object is not iterable",
+    "summary": "You tried to loop over or unpack a '<t>' value.",
+    "causes": [
+      "Looping over a single number or None.",
+      "A function returned None instead of a list."
+    ],
+    "fix": "Make sure the value is a list, tuple, string, etc. For a number, use range().",
+    "example": "for i in range(5):\n    print(i)"
+  },
+  {
+    "error_type": "TypeError",
+    "pattern": "missing (?P<n>\\d+) required positional argument",
+    "summary": "A function was called with too few arguments (missing <n>).",
+    "causes": [
+      "You left out one or more arguments in the call.",
+      "A method was called on the class instead of an object, so 'self' is missing."
+    ],
+    "fix": "Pass all required arguments, or give the parameters default values. For methods, create an object first.",
+    "example": "def greet(name, greeting='Hello'):\n    print(greeting, name)\n\ngreet('Sam')"
+  },
+  {
+    "error_type": "TypeError",
+    "pattern": "takes (?P<exp>.+) positional arguments? but (?P<got>.+) (?:was|were) given",
+    "summary": "A function expects <exp> argument(s) but received <got>.",
+    "causes": [
+      "Too many arguments in the call.",
+      "A method in a class is missing 'self' as its first parameter."
+    ],
+    "fix": "Match the number of arguments to the function definition, and add 'self' as the first parameter of class methods.",
+    "example": "class A:\n    def run(self, x):\n        return x"
+  },
+  {
+    "error_type": "KeyError",
+    "pattern": "(?P<key>.+)",
+    "summary": "The dictionary has no key <key>.",
+    "causes": [
+      "A typo or different capitalization in the key.",
+      "The key was never added to the dictionary.",
+      "Data from a file or API is missing that field."
+    ],
+    "fix": "Check the key exists first, or use .get() with a default value.",
+    "example": "value = data.get('name', 'unknown')\n\nif 'name' in data:\n    print(data['name'])"
+  },
+  {
+    "error_type": "IndexError",
+    "pattern": "out of range",
+    "summary": "You asked for a list position that does not exist.",
+    "causes": [
+      "The index is bigger than the last position (lists start at 0, so a list of 3 items ends at index 2).",
+      "The list is empty.",
+      "An off-by-one mistake in a loop, such as range(len(x) + 1)."
+    ],
+    "fix": "Check the length before indexing, and loop with range(len(my_list)) or directly over the items.",
+    "example": "if len(items) > 2:\n    print(items[2])\n\nfor item in items:\n    print(item)"
+  },
+  {
+    "error_type": "AttributeError",
+    "pattern": "'NoneType' object has no attribute '(?P<attr>[^']+)'",
+    "summary": "You used '.<attr>' on None, meaning a variable holds no value.",
+    "causes": [
+      "A function did not return anything (it returned None).",
+      "A method that changes the object in place (like list.sort() or list.append()) was assigned to a variable.",
+      "A search such as re.match() or a lookup found nothing."
+    ],
+    "fix": "Check the value is not None before using it, and make sure your function has a return statement.",
+    "example": "match = re.search(pattern, text)\nif match:\n    print(match.group())"
+  },
+  {
+    "error_type": "AttributeError",
+    "pattern": "module '(?P<module>[^']+)' has no attribute '(?P<attr>[^']+)'",
+    "summary": "The module '<module>' has no '<attr>'.",
+    "causes": [
+      "A typo in '<attr>'.",
+      "Your own file is named '<module>.py' and is hiding the real library.",
+      "An older version of the library does not include it."
+    ],
+    "fix": "Rename any of your files that share a name with a library, delete its __pycache__ folder, check the spelling, and update the library.",
+    "example": "pip install --upgrade <module>"
+  },
+  {
+    "error_type": "AttributeError",
+    "pattern": "'(?P<obj>[^']+)' object has no attribute '(?P<attr>[^']+)'",
+    "summary": "A '<obj>' has no attribute or method named '<attr>'.",
+    "causes": [
+      "A typo or wrong capitalization in '<attr>'.",
+      "The variable is a different type than you expect.",
+      "Using a method from another type (for example a list method on a string)."
+    ],
+    "fix": "Print type() of the variable and use dir() to see what it supports.",
+    "example": "print(type(x))\nprint(dir(x))"
+  },
+  {
+    "error_type": "FileNotFoundError",
+    "pattern": "No such file or directory: '(?P<path>[^']+)'",
+    "summary": "The file or folder '<path>' was not found.",
+    "causes": [
+      "A typo in the file name or extension.",
+      "The script is running from a different folder than you expect.",
+      "The file has not been created or moved yet."
+    ],
+    "fix": "Check the exact path, or build it from the script location so it works from anywhere.",
+    "example": "from pathlib import Path\npath = Path(__file__).parent / 'data.txt'\nprint(path.exists())"
+  },
+  {
+    "error_type": "FileNotFoundError",
+    "summary": "Python cannot find the file or path you gave it.",
+    "causes": [
+      "Wrong file name, extension or folder.",
+      "The program runs from a different working directory."
+    ],
+    "fix": "Print os.getcwd() to see where Python is looking, and use a full path or a path relative to your script.",
+    "example": "import os\nprint(os.getcwd())"
+  },
+  {
+    "error_type": "PermissionError",
+    "summary": "Python is not allowed to access this file or folder.",
+    "causes": [
+      "The file is open in another program (common with Excel files).",
+      "You are opening a folder as if it were a file.",
+      "The file or folder needs admin rights."
+    ],
+    "fix": "Close other programs using the file, check you are pointing at a file and not a folder, and check file permissions.",
+    "example": ""
+  },
+  {
+    "error_type": "ZeroDivisionError",
+    "summary": "You divided a number by zero.",
+    "causes": [
+      "A variable that should not be zero is zero (empty list length, missing data).",
+      "A calculation produced 0 earlier in the program."
+    ],
+    "fix": "Check the divisor before dividing.",
+    "example": "if count != 0:\n    average = total / count\nelse:\n    average = 0"
+  },
+  {
+    "error_type": "ValueError",
+    "pattern": "invalid literal for int\\(\\) with base (?P<base>\\d+): (?P<value>.+)",
+    "summary": "The text <value> cannot be turned into a whole number.",
+    "causes": [
+      "The text contains letters, spaces, symbols or a decimal point.",
+      "The input is empty.",
+      "A float written as text, such as '3.5', passed to int()."
+    ],
+    "fix": "Validate or clean the text before converting, and catch the error.",
+    "example": "text = input('Number: ').strip()\nif text.isdigit():\n    n = int(text)\nelse:\n    print('Please enter digits only')"
+  },
+  {
+    "error_type": "ValueError",
+    "pattern": "could not convert string to float: (?P<value>.+)",
+    "summary": "The text <value> cannot be turned into a decimal number.",
+    "causes": [
+      "The text has letters, commas or currency symbols.",
+      "The text is empty."
+    ],
+    "fix": "Remove unwanted characters and wrap the conversion in try/except.",
+    "example": "try:\n    x = float(text.replace(',', ''))\nexcept ValueError:\n    print('Not a number')"
+  },
+  {
+    "error_type": "ValueError",
+    "pattern": "(?:not enough|too many) values to unpack",
+    "summary": "The number of variables does not match the number of values.",
+    "causes": [
+      "Unpacking a list or tuple into the wrong number of variables.",
+      "A split() produced more or fewer parts than expected."
+    ],
+    "fix": "Print the value to check its length and match the variable count, or use a starred variable for the rest.",
+    "example": "first, *rest = items"
+  },
+  {
+    "error_type": "SyntaxError",
+    "pattern": "'(?P<br>.)' was never closed",
+    "summary": "A '<br>' was opened but never closed.",
+    "causes": [
+      "A missing closing bracket, parenthesis or brace, often on this line or just above it."
+    ],
+    "fix": "Count your opening and closing brackets in the reported line and the lines above it.",
+    "example": "print('hello')"
+  },
+  {
+    "error_type": "SyntaxError",
+    "pattern": "expected ':'",
+    "summary": "A colon is missing.",
+    "causes": [
+      "Statements like if, for, while, def, class, else and try must end with a colon."
+    ],
+    "fix": "Add ':' at the end of the line.",
+    "example": "if x > 5:\n    print('big')"
+  },
+  {
+    "error_type": "SyntaxError",
+    "pattern": "unterminated string literal",
+    "summary": "A text string was opened but not closed.",
+    "causes": [
+      "A missing closing quote.",
+      "Mixing single and double quotes, or an apostrophe inside a single-quoted string."
+    ],
+    "fix": "Close the string with the same quote you opened it with, or wrap the text in the other kind of quote.",
+    "example": "print(\"It's fine\")"
+  },
+  {
+    "error_type": "SyntaxError",
+    "pattern": "Missing parentheses in call to 'print'",
+    "summary": "print needs parentheses in Python 3.",
+    "causes": [
+      "The code was written in Python 2 style."
+    ],
+    "fix": "Put the text inside parentheses.",
+    "example": "print('hello')"
+  },
+  {
+    "error_type": "SyntaxError",
+    "summary": "Python cannot understand the code on the reported line.",
+    "causes": [
+      "A missing or extra bracket, quote, comma or colon on this line or the line above.",
+      "Using = (assign) where == (compare) is needed.",
+      "A misspelled keyword.",
+      "Code copied with special characters, like curly quotes."
+    ],
+    "fix": "Look at the reported line and the one before it, and check for unmatched brackets or quotes, missing colons and typos.",
+    "example": ""
+  },
+  {
+    "error_type": "IndentationError",
+    "pattern": "unexpected indent",
+    "summary": "A line is indented when it should not be.",
+    "causes": [
+      "Extra spaces or an extra tab at the start of the line."
+    ],
+    "fix": "Line the code up with the surrounding lines, and use 4 spaces consistently.",
+    "example": ""
+  },
+  {
+    "error_type": "IndentationError",
+    "pattern": "expected an indented block",
+    "summary": "A block needs at least one indented line under it.",
+    "causes": [
+      "The body after if, for, def, class and similar statements is empty or not indented."
+    ],
+    "fix": "Indent the next line by 4 spaces, or use 'pass' as a placeholder.",
+    "example": "def my_function():\n    pass"
+  },
+  {
+    "error_type": "IndentationError",
+    "summary": "The indentation is inconsistent.",
+    "causes": [
+      "Mixing tabs and spaces.",
+      "A line is indented to a level that does not match any block above it."
+    ],
+    "fix": "Use 4 spaces everywhere. In VS Code, use 'Convert Indentation to Spaces' from the Command Palette.",
+    "example": ""
+  },
+  {
+    "error_type": "RecursionError",
+    "summary": "A function kept calling itself until Python stopped it.",
+    "causes": [
+      "A recursive function has no stopping condition (base case), or it never reaches it.",
+      "Two functions call each other forever."
+    ],
+    "fix": "Add a base case that returns without calling the function again, and make sure each call moves closer to it.",
+    "example": "def countdown(n):\n    if n == 0:\n        return\n    countdown(n - 1)"
+  },
+  {
+    "error_type": "JSONDecodeError",
+    "summary": "The text is not valid JSON.",
+    "causes": [
+      "The text is empty, or the API/file returned HTML or an error message instead of JSON.",
+      "Single quotes used instead of double quotes.",
+      "A trailing comma or missing bracket."
+    ],
+    "fix": "Print the raw text before parsing and check it. Validate JSON with a tool such as jsonlint.com.",
+    "example": "print(repr(raw_text))\ndata = json.loads(raw_text)"
+  },
+  {
+    "error_type": "UnicodeDecodeError",
+    "summary": "A file or data was read with the wrong text encoding.",
+    "causes": [
+      "The file is not UTF-8 (often a Windows file or a binary file).",
+      "You are opening a binary file, such as an image, in text mode."
+    ],
+    "fix": "Specify the encoding when opening, or open binary files in 'rb' mode.",
+    "example": "with open('file.txt', encoding='utf-8', errors='replace') as f:\n    text = f.read()"
+  },
+  {
+    "error_type": "AssertionError",
+    "summary": "An assert statement checked a condition that turned out false.",
+    "causes": [
+      "A value is not what the code assumed.",
+      "A test expectation does not match the real result."
+    ],
+    "fix": "Print the values used in the assert to see why the condition fails, then fix the data or the expectation.",
+    "example": ""
+  }
+  ,
+  {
+    "error_type": "MemoryError",
+    "summary": "Python ran out of memory.",
+    "causes": [
+      "Loading a very large file or dataset all at once.",
+      "A list or loop that keeps growing without limit.",
+      "Creating huge objects, such as a giant range converted to a list."
+    ],
+    "fix": "Process data in smaller pieces instead of loading everything at once, and use generators or chunked reading.",
+    "example": "with open('big.txt') as f:\n    for line in f:\n        process(line)"
+  }
+]
+  

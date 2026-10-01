@@ -1,0 +1,69 @@
+Traceback (most recent call last):
+  File "app.py", line 1, in <module>
+    import requests
+ModuleNotFoundError: No module named 'requests'
+-----
+Traceback (most recent call last):
+  File "main.py", line 4, in <module>
+    print(total)
+NameError: name 'total' is not defined
+-----
+Traceback (most recent call last):
+  File "main.py", line 3, in <module>
+    print('Age: ' + 25)
+TypeError: can only concatenate str (not "int") to str
+-----
+Traceback (most recent call last):
+  File "main.py", line 5, in <module>
+    print(data['name'])
+KeyError: 'name'
+-----
+Traceback (most recent call last):
+  File "main.py", line 3, in <module>
+    print(items[5])
+IndexError: list index out of range
+-----
+Traceback (most recent call last):
+  File "main.py", line 2, in <module>
+    f = open('data.txt')
+FileNotFoundError: [Errno 2] No such file or directory: 'data.txt'
+-----
+Traceback (most recent call last):
+  File "main.py", line 2, in <module>
+    print(10 / 0)
+ZeroDivisionError: division by zero
+-----
+Traceback (most recent call last):
+  File "main.py", line 2, in <module>
+    n = int('abc')
+ValueError: invalid literal for int() with base 10: 'abc'
+-----
+Traceback (most recent call last):
+  File "main.py", line 6, in <module>
+    print(result.group())
+AttributeError: 'NoneType' object has no attribute 'group'
+-----
+  File "main.py", line 3
+    if x > 5
+            ^
+SyntaxError: expected ':'
+-----
+  File "main.py", line 3
+    print('hi')
+    ^
+IndentationError: expected an indented block after 'if' statement on line 2
+-----
+Traceback (most recent call last):
+  File "main.py", line 2, in <module>
+    print(5 + 'a')
+TypeError: unsupported operand type(s) for +: 'int' and 'str'
+-----
+Traceback (most recent call last):
+  File "main.py", line 2, in <module>
+    x = my_dict.keys()[0]
+TypeError: 'dict_keys' object is not subscriptable
+-----
+Traceback (most recent call last):
+  File "main.py", line 9, in <module>
+    raise MemoryError
+MemoryError
